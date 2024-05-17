@@ -37,9 +37,10 @@ module MIDI
       mute:           0x62,
     }
 
-    def initialize(output:, device_id: nil)
+    def initialize(output:, device_id: nil, debug: nil)
       @output = output
       @device_id = device_id || DEVICE_ID_ALL
+      @debug = debug
     end
 
     def stop
@@ -130,7 +131,7 @@ module MIDI
       if @debug
         warn "%-15s >>> %s" % [command, msg.map { |b| '%02X' % b }.join(' ')]
       end
-      output.write(msg.pack('C*'))
+      @output.write(msg.pack('C*')) if @output
       msg
     end
 
