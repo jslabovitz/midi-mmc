@@ -131,7 +131,7 @@ module MIDI
       if @debug
         warn "%-15s >>> %s" % [command, msg.map { |b| '%02X' % b }.join(' ')]
       end
-      @output.write(msg.pack('C*')) if @output
+      @output.puts(msg) if @output
       msg
     end
 
