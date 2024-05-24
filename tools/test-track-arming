@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+require 'unimidi'
+
+require_relative '../lib/midi-mmc'
+
+MIDI_OUTPUT_DEVICE = 9
+
+output = UniMIDI::Output.all.find { |o| o.id == MIDI_OUTPUT_DEVICE } \
+  or raise "Can't find MIDI device with ID #{MIDI_OUTPUT_DEVICE}"
+
+mmc = MIDI::MMC.new(output:, debug: true)
+
+mmc.reset
+
+begin
+  24.times.each do |track|
+    mmc.write(nil)
+    msg = mmc.write(track)
+    pp(track => msg)
+    gets
+  end
+ensure
+  mmc.write(nil)
+  mmc.reset
+end
