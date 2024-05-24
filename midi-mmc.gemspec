@@ -13,7 +13,8 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
 
   gem.add_development_dependency 'bundler', '~> 2.5'
-  gem.add_development_dependency 'minitest', '~> 5.22'
+  gem.add_development_dependency 'minitest', '~> 5.23'
   gem.add_development_dependency 'minitest-power_assert', '~> 0.3'
   gem.add_development_dependency 'rake', '~> 13.2'
+  gem.add_development_dependency 'unimidi', '~> 0.5'
 end
