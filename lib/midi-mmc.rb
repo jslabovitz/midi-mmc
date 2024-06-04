@@ -127,13 +127,17 @@ module MIDI
       send_command_message(:shuffle)
     end
 
+    def message_to_str(msg)
+      msg.map { |b| '%02X' % b }.join(' ')
+    end
+
     private
 
     def send_command_message(command, *elements, wait: nil)
       id = COMMANDS[command] or raise
       msg = [0xF0, 0x7F, @device_id, TYPES[:command], id, *elements, 0xF7]
       if @debug
-        warn "%-15s >>> %s" % [command, msg.map { |b| '%02X' % b }.join(' ')]
+        warn "%-15s >>> %s" % [command, message_to_str(msg)]
       end
       @output.puts(msg) if @output
       sleep(wait) if wait
