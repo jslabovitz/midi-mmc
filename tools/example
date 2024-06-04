@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require 'midi-mmc'
+require 'unimidi'
+
+# set up
+midi_output = UniMIDI::Output.gets
+mmc = MIDI::MMC.new(output: midi_output)
+mmc.reset
+
+# record
+mmc.goto_zero
+mmc.arm_tracks(1)
+# record something here
+mmc.stop
+mmc.arm_tracks(nil)
+
+# play back
+mmc.goto_zero
+mmc.play
