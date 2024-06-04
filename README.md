@@ -38,6 +38,15 @@ mmc.play
 ```
 
 
+## Installation
+
+Install as a gem:
+
+    gem install midi-mmc
+
+...or add to your `Gemfile` or `.gemspec` file as needed.
+
+
 ## Requirements
 
 MIDI::MMC is designed to work with the [unimidi](http://github.com/arirusso/unimidi) gem, although any object passed in the `output` parameter to `MIDI::MMC.new` that responds to the `#puts` method can be used.
