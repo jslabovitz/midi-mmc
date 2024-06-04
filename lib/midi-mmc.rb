@@ -26,7 +26,7 @@ module MIDI
       chase:          0x0B,
       reset:          0x0D,
       write:          0x40,
-      goto:           0x44,
+      locate:         0x44,
       shuttle:        0x47,
     }
 
@@ -66,10 +66,12 @@ module MIDI
     def record_strobe
       send_command_message(:record_strobe)
     end
+    alias_method :punch_in, :record_strobe
 
     def record_exit
       send_command_message(:record_exit)
     end
+    alias_method :punch_out, :record_exit
 
     def record_pause
       send_command_message(:record_pause)
@@ -91,7 +93,7 @@ module MIDI
       send_command_message(:reset)
     end
 
-    def write(tracks)
+    def arm_tracks(tracks)
       tracks = case tracks
       when nil
         []
@@ -109,15 +111,17 @@ module MIDI
       track_bitmap = [bytes.length, *bytes]
       send_command_message(:write, track_bitmap.length, mode_id, *track_bitmap)
     end
+    alias_method :record_ready, :arm_tracks
 
-    def goto(location)
-      send_command_message(:goto, 0x06, 0x01, *location)
-      sleep(1)
+    def locate(location)
+      send_command_message(:locate, 0x06, 0x01, *location, wait: 1)
     end
+    alias_method :goto, :locate
 
-    def goto_zero
-      goto([0, 0, 0, 0, 0])
+    def locate_zero
+      locate([0, 0, 0, 0, 0])
     end
+    alias_method :goto_zero, :locate_zero
 
     def shuffle
       send_command_message(:shuffle)
@@ -125,13 +129,14 @@ module MIDI
 
     private
 
-    def send_command_message(command, *elements)
+    def send_command_message(command, *elements, wait: nil)
       id = COMMANDS[command] or raise
       msg = [0xF0, 0x7F, @device_id, TYPES[:command], id, *elements, 0xF7]
       if @debug
         warn "%-15s >>> %s" % [command, msg.map { |b| '%02X' % b }.join(' ')]
       end
       @output.puts(msg) if @output
+      sleep(wait) if wait
       msg
     end
 
