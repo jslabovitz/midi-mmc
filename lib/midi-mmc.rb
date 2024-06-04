@@ -107,8 +107,8 @@ module MIDI
         raise
       end
       bytes = track_bitmap_bytes(tracks)
-      mode_id = WRITE_MODES[:record_ready] or raise
       track_bitmap = [bytes.length, *bytes]
+      mode_id = WRITE_MODES[:record_ready] or raise
       send_command_message(:write, track_bitmap.length, mode_id, *track_bitmap)
     end
     alias_method :record_ready, :arm_tracks
