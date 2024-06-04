@@ -1,26 +1,27 @@
 #!/usr/bin/env ruby
 
+#
+# This script exercises the 'arm tracks' MMC command, in order to determine
+# the proper track bitmap.
+#
+
 require 'unimidi'
 
 require_relative '../lib/midi-mmc'
 
-MIDI_OUTPUT_DEVICE = 9
-
-output = UniMIDI::Output.all.find { |o| o.id == MIDI_OUTPUT_DEVICE } \
-  or raise "Can't find MIDI device with ID #{MIDI_OUTPUT_DEVICE}"
-
-mmc = MIDI::MMC.new(output:, debug: true)
+midi_output = UniMIDI::Output.gets
+mmc = MIDI::MMC.new(output: midi_output, debug: true)
 
 mmc.reset
 
 begin
-  24.times.each do |track|
+  1.upto(24).each do |track|
     mmc.write(nil)
-    msg = mmc.write(track)
+    msg = mmc.arm_tracks(track)
     pp(track => msg)
     gets
   end
 ensure
-  mmc.write(nil)
+  mmc.arm_tracks(nil)
   mmc.reset
 end
