@@ -49,7 +49,7 @@ Install as a gem:
 
 ## Requirements
 
-MIDI::MMC is designed to work with the [unimidi](http://github.com/arirusso/unimidi) gem, although any object passed in the `output` parameter to `MIDI::MMC.new` that responds to the `#puts` method can be used.
+MIDI::MMC is designed to work with the [UniMIDI](http://github.com/arirusso/unimidi) gem, although any object passed in the `output` parameter to `MIDI::MMC.new` that responds to the `#puts` method can be used.
 
 
 ## References
