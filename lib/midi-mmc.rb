@@ -37,7 +37,7 @@ module MIDI
       mute:           0x62,
     }
 
-    def initialize(output:, device_id: nil, debug: nil)
+    def initialize(output: nil, device_id: nil, debug: nil)
       @output = output
       @device_id = device_id || DEVICE_ID_ALL
       @debug = debug
